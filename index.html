@@ -1,127 +1,442 @@
-<!doctype html>
-<html lang="ne">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rdl Cash — Professional Demo</title>
-<style>
-  :root {
-    --bg: #071029; --card: #0f1724; --accent1: #06b6d4; --accent2: #3b82f6; --muted: #94a3b8;
-    --radius: 18px; --shadow: 0 6px 18px rgba(2,6,23,0.6);
-    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  }
-  * {box-sizing:border-box}
-  body {margin:0; background:var(--bg); color:#e6eef8; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:12px;}
-  .app {width:420px; max-width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:22px; box-shadow:var(--shadow); overflow:hidden;}
-  header{padding:14px; display:flex; align-items:center; gap:12px}
-  .logo{width:52px;height:52px;background:linear-gradient(135deg,var(--accent1),var(--accent2)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700}
-  .title h1{margin:0;font-size:18px}
-  .title p{margin:0;font-size:12px;color:var(--muted)}
-  main{padding:12px; overflow:auto}
-  .section{background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; box-shadow:0 6px 22px rgba(6,12,28,0.5)}
-  button{background:linear-gradient(90deg,var(--accent1),var(--accent2)); border:none;color:#012; padding:10px 12px; border-radius:10px; font-weight:700; cursor:pointer}
-  .muted{color:var(--muted); font-size:13px}
-  input, select{width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; margin-bottom:8px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Coin</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons for UI icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Ad SDK Script -->
+    <script src='//libtl.com/sdk.js' data-zone='9935313' data-sdk='show_9935313'></script>
+
+    <style>
+        /* Custom styles for a modern, clean look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f1f5f9; /* Slate 100 */
+        }
+
+        /* Custom gradient for background elements */
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        /* Custom glassmorphism effect for cards */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6); /* Slate 800 with transparency */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.5); /* Slate 700 with transparency */
+        }
+        
+        /* Custom styles for buttons */
+        .btn-primary {
+            background: linear-gradient(90deg, #22d3ee 0%, #0ea5e9 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+        
+        /* Styling for the bottom navigation */
+        .nav-item.active i, .nav-item.active span {
+            color: #22d3ee; /* Cyan 400 */
+        }
+        .nav-item {
+            transition: color 0.3s ease;
+        }
+        
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 </head>
-<body>
-<div class="app">
-  <header>
-    <div class="logo">💵</div>
-    <div class="title">
-      <h1>Rdl Cash</h1>
-      <p class="muted">Professional Earnings App</p>
-    </div>
-  </header>
+<body class="antialiased">
 
-  <main>
-    <!-- Dashboard Section -->
-    <div class="section" id="dashboard">
-      <h3>Dashboard</h3>
-      <p class="muted">Tap once, earn after 24 hours</p>
-      <button id="tapEarnBtn">Tap to Earn</button>
-      <div id="tapTimer" class="muted">Next earning in: 24:00:00</div>
-    </div>
+    <!-- Auth Page (Login/Signup) -->
+    <div id="auth-page" class="min-h-screen flex flex-col items-center justify-center p-6 gradient-bg">
+        <div class="w-full max-w-sm text-center">
+            <i class="ph-bold ph-rocket-launch text-7xl text-cyan-400"></i>
+            <h1 class="text-4xl font-bold mt-4">Cosmic Coin</h1>
+            <p class="text-slate-400 mt-2">Start your earning journey.</p>
 
-    <!-- Tasks Section -->
-    <div class="section" id="tasks">
-      <h3>Tasks</h3>
-      <div>
-        <button id="joinTelegram">Join Telegram</button>
-      </div>
-      <div>
-        <button id="watchRewardAd">Watch Reward Ad</button>
-      </div>
+            <form id="login-form" class="mt-8 space-y-6">
+                <input id="username-input" type="text" placeholder="Enter Your Username" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">
+                    Login / Sign Up
+                </button>
+            </form>
+        </div>
     </div>
 
-    <!-- Withdraw Section -->
-    <div class="section" id="withdraw">
-      <h3>Withdraw</h3>
-      <input type="number" id="withdrawAmount" placeholder="Amount (coins)">
-      <select id="withdrawMethod">
-        <option>PayPal</option>
-        <option>Bank Transfer</option>
-        <option>Payoneer</option>
-        <option>Crypto (USDT)</option>
-        <option>Gift Card</option>
-      </select>
-      <input type="text" id="withdrawDetails" placeholder="Account details">
-      <button id="reqWithdraw">Request Withdraw</button>
+    <!-- Main App Page -->
+    <div id="app-page" class="hidden h-screen w-screen flex flex-col">
+        <!-- Header -->
+        <header class="p-4 flex items-center justify-between glass-card flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <img src="https://placehold.co/40x40/0f172a/22d3ee?text=U" id="user-avatar" class="rounded-full w-10 h-10 border-2 border-cyan-400" alt="User Avatar">
+                <div>
+                    <p class="font-semibold text-lg" id="username-display">Username</p>
+                    <span class="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">Tier 1</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                 <div class="text-right">
+                    <p class="font-bold text-lg text-cyan-400 flex items-center gap-1"><i class="ph-bold ph-coins"></i> <span id="balance-display">0</span></p>
+                    <p class="text-xs text-slate-400">Balance</p>
+                </div>
+                 <i class="ph ph-gear text-2xl text-slate-400"></i>
+            </div>
+        </header>
+
+        <!-- Main Content (Scrollable) -->
+        <main id="content-container" class="flex-grow overflow-y-auto p-4 pb-24 no-scrollbar">
+            <!-- Home Section -->
+            <div id="home-section" class="space-y-6">
+                 <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <p class="text-slate-400 text-sm">Tasks Earned</p>
+                        <p class="text-2xl font-bold mt-1" id="tasks-earned">0</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <p class="text-slate-400 text-sm">Friends Earned</p>
+                        <p class="text-2xl font-bold mt-1" id="friends-earned">0</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-4">
+                     <h2 class="text-xl font-bold mb-4">Play to Earn</h2>
+                     <div class="grid grid-cols-2 gap-4">
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img src="https://placehold.co/300x200/0ea5e9/ffffff?text=Puzzle" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-3">
+                                <h3 class="font-semibold text-white">Puzzle Game</h3>
+                            </div>
+                        </div>
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Wheel" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-3">
+                                <h3 class="font-semibold text-white">Lucky Wheel</h3>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Tasks Section -->
+            <div id="tasks-section" class="hidden space-y-4">
+                <h2 class="text-xl font-bold">Daily Tasks</h2>
+                
+                <!-- Join Telegram Task -->
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center">
+                            <i class="ph-bold ph-telegram-logo text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Join Telegram Channel</p>
+                            <p class="text-sm text-green-400 font-bold">+5,000 Coins</p>
+                        </div>
+                    </div>
+                    <a href="https://t.me/rdlcash" target="_blank" id="join-telegram-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-4 py-2 rounded-lg text-sm">Start</a>
+                </div>
+                
+                <!-- Watch Ads Task -->
+                <div class="glass-card rounded-xl p-4 space-y-3">
+                     <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
+                            <i class="ph-bold ph-video text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Watch Ads</p>
+                            <p class="text-sm text-green-400 font-bold">Earn coins for watching</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button id="ad-rewarded-interstitial" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-lg text-sm">Rewarded Ad 1</button>
+                        <button id="ad-rewarded-popup" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-lg text-sm">Rewarded Ad 2</button>
+                    </div>
+                </div>
+                
+                <!-- Invite Friends Task (Placeholder) -->
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-rose-500 rounded-lg flex items-center justify-center">
+                            <i class="ph-bold ph-users text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Invite 10 friends</p>
+                            <p class="text-sm text-green-400 font-bold">+10,000 Coins</p>
+                        </div>
+                    </div>
+                    <button class="bg-slate-700 text-slate-400 font-bold px-4 py-2 rounded-lg text-sm cursor-not-allowed">Claim</button>
+                </div>
+
+            </div>
+
+             <!-- Friends Section -->
+            <div id="friends-section" class="hidden text-center p-4">
+                 <div class="glass-card rounded-xl p-6">
+                    <i class="ph-bold ph-gift text-6xl text-cyan-400"></i>
+                    <h2 class="text-2xl font-bold mt-4">Invite Friends!</h2>
+                    <p class="text-slate-400 mt-2">You and your friend will receive bonuses.</p>
+                    <button class="w-full mt-6 btn-primary text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2">
+                        <i class="ph ph-user-plus"></i>
+                        <span>Invite Friends</span>
+                    </button>
+                 </div>
+            </div>
+
+            <!-- Wallet Section -->
+            <div id="wallet-section" class="hidden space-y-6">
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <p class="text-slate-400">Your Balance</p>
+                    <p class="text-5xl font-bold my-2" id="wallet-balance">0.00 <span class="text-3xl text-slate-400">COIN</span></p>
+                    <div class="grid grid-cols-4 gap-4 mt-6">
+                        <div class="text-center">
+                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-arrow-up-right text-2xl text-cyan-400"></i></button>
+                            <span class="text-xs mt-2 block">Withdraw</span>
+                        </div>
+                        <div class="text-center">
+                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-arrow-down-left text-2xl text-cyan-400"></i></button>
+                            <span class="text-xs mt-2 block">Deposit</span>
+                        </div>
+                         <div class="text-center">
+                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-stack text-2xl text-cyan-400"></i></button>
+                            <span class="text-xs mt-2 block">Stake</span>
+                        </div>
+                         <div class="text-center">
+                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-clock-counter-clockwise text-2xl text-cyan-400"></i></button>
+                            <span class="text-xs mt-2 block">History</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 p-3 glass-card border-t border-slate-700/50">
+            <div class="flex justify-around">
+                <button data-section="home" class="nav-item active flex flex-col items-center w-16 text-slate-400">
+                    <i class="ph-bold ph-house text-2xl"></i>
+                    <span class="text-xs">Home</span>
+                </button>
+                <button data-section="tasks" class="nav-item flex flex-col items-center w-16 text-slate-400">
+                    <i class="ph-bold ph-list-checks text-2xl"></i>
+                    <span class="text-xs">Tasks</span>
+                </button>
+                <button data-section="friends" class="nav-item flex flex-col items-center w-16 text-slate-400">
+                    <i class="ph-bold ph-users-three text-2xl"></i>
+                    <span class="text-xs">Friends</span>
+                </button>
+                <button data-section="wallet" class="nav-item flex flex-col items-center w-16 text-slate-400">
+                    <i class="ph-bold ph-wallet text-2xl"></i>
+                    <span class="text-xs">Wallet</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Custom Message Modal -->
+    <div id="message-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+        <div class="glass-card rounded-xl p-6 text-center max-w-sm w-full">
+            <i id="modal-icon" class="ph-bold ph-gift text-5xl text-cyan-400"></i>
+            <h3 id="modal-title" class="text-xl font-bold mt-4">Congratulations!</h3>
+            <p id="modal-message" class="text-slate-300 mt-2">You've earned 100 coins!</p>
+            <button id="modal-close-btn" class="w-full mt-6 btn-primary text-white font-bold py-2 rounded-lg">
+                Awesome!
+            </button>
+        </div>
     </div>
 
-    <!-- Profile Section -->
-    <div class="section" id="profile">
-      <h3>Profile</h3>
-      <p class="muted">User ID: 12345</p>
-      <p class="muted">Name: Professional User</p>
-    </div>
 
-  </main>
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- STATE MANAGEMENT ---
+            let user = {
+                username: null,
+                balance: 0,
+                tasksEarned: 0,
+                friendsEarned: 0
+            };
 
-<script src='//libtl.com/sdk.js' data-zone='9935313' data-sdk='show_9935313'></script>
-<script>
-let balance = 0;
-const tapBtn = document.getElementById('tapEarnBtn');
-const tapTimerEl = document.getElementById('tapTimer');
-let nextTapTime = Date.now();
+            // --- DOM ELEMENTS ---
+            const authPage = document.getElementById('auth-page');
+            const appPage = document.getElementById('app-page');
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username-input');
+            const usernameDisplay = document.getElementById('username-display');
+            const userAvatar = document.getElementById('user-avatar');
 
-function updateTimer(){
-  const diff = Math.max(0, nextTapTime - Date.now());
-  const h = Math.floor(diff/3600000).toString().padStart(2,'0');
-  const m = Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
-  const s = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
-  tapTimerEl.innerText = `Next earning in: ${h}:${m}:${s}`;
-}
-setInterval(updateTimer, 1000);
+            const balanceDisplay = document.getElementById('balance-display');
+            const walletBalanceDisplay = document.getElementById('wallet-balance');
+            const tasksEarnedDisplay = document.getElementById('tasks-earned');
+            const friendsEarnedDisplay = document.getElementById('friends-earned');
 
-tapBtn.addEventListener('click', ()=>{
-  if(Date.now()>=nextTapTime){
-    balance += 50;
-    nextTapTime = Date.now() + 24*60*60*1000;
-    alert('50 coins credited.');
-  } else {
-    alert('Earning not ready yet.');
-  }
-});
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentSections = document.querySelectorAll('#content-container > div');
+            
+            const rewardedInterstitialBtn = document.getElementById('ad-rewarded-interstitial');
+            const rewardedPopupBtn = document.getElementById('ad-rewarded-popup');
+            
+            const messageModal = document.getElementById('message-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
 
-// Telegram Join Task
-document.getElementById('joinTelegram').addEventListener('click', ()=>{
-  window.open('https://t.me/rdlcash','_blank');
-});
+            // --- FUNCTIONS ---
+            
+            // Function to update all UI elements with current user data
+            function updateUI() {
+                if (user.username) {
+                    const firstLetter = user.username.charAt(0).toUpperCase();
+                    usernameDisplay.textContent = user.username;
+                    userAvatar.src = `https://placehold.co/40x40/0f172a/22d3ee?text=${firstLetter}`;
+                }
+                const formattedBalance = user.balance.toLocaleString();
+                balanceDisplay.textContent = formattedBalance;
+                walletBalanceDisplay.textContent = `${formattedBalance}.00`;
+                tasksEarnedDisplay.textContent = user.tasksEarned.toLocaleString();
+                friendsEarnedDisplay.textContent = user.friendsEarned.toLocaleString();
+            }
+            
+            // Function to show a specific content section
+            function showSection(sectionId) {
+                contentSections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(sectionId + '-section').classList.remove('hidden');
+                
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.section === sectionId) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+            
+            // Function to show the custom message modal
+            function showMessage(title, message) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                messageModal.classList.remove('hidden');
+            }
 
-// Rewarded Ad Task
-document.getElementById('watchRewardAd').addEventListener('click', ()=>{
-  show_9935313().then(()=>{
-    balance += 20;
-    alert('Ad watched: 20 coins credited');
-  });
-});
+            // Function to handle login
+            function handleLogin(e) {
+                e.preventDefault();
+                const username = usernameInput.value.trim();
+                if (username) {
+                    user.username = username;
+                    localStorage.setItem('cosmicCoinUser', JSON.stringify(user));
+                    authPage.classList.add('hidden');
+                    appPage.classList.remove('hidden');
+                    updateUI();
+                    
+                    // This is where you can load the In-App Interstitial Ad on app start
+                    try {
+                        show_9935313({
+                            type: 'inApp',
+                            inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
+                        });
+                    } catch (e) {
+                        console.error("In-App Ad failed to load:", e);
+                    }
+                }
+            }
 
-// Withdraw request simulation
-document.getElementById('reqWithdraw').addEventListener('click', ()=>{
-  alert('Withdraw request submitted (simulation).');
-});
-</script>
+            // Function to initialize the app
+            function init() {
+                const savedUser = localStorage.getItem('cosmicCoinUser');
+                if (savedUser) {
+                    user = JSON.parse(savedUser);
+                    authPage.classList.add('hidden');
+                    appPage.classList.remove('hidden');
+                    updateUI();
+                     try {
+                        show_9935313({
+                            type: 'inApp',
+                            inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
+                        });
+                    } catch (e) {
+                        console.error("In-App Ad failed to load on init:", e);
+                    }
+                } else {
+                    authPage.classList.remove('hidden');
+                    appPage.classList.add('hidden');
+                }
+            }
+            
+            function rewardUser(amount, type = 'task') {
+                user.balance += amount;
+                if (type === 'task') {
+                    user.tasksEarned += amount;
+                }
+                localStorage.setItem('cosmicCoinUser', JSON.stringify(user));
+                updateUI();
+                showMessage('Congratulations!', `You have been rewarded with ${amount.toLocaleString()} coins!`);
+            }
+
+            // --- EVENT LISTENERS ---
+            loginForm.addEventListener('submit', handleLogin);
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    showSection(item.dataset.section);
+                });
+            });
+
+            modalCloseBtn.addEventListener('click', () => {
+                messageModal.classList.add('hidden');
+            });
+            
+            // Rewarded Interstitial Ad
+            rewardedInterstitialBtn.addEventListener('click', () => {
+                try {
+                    show_9935313().then(() => {
+                        console.log('Rewarded interstitial ad watched.');
+                        rewardUser(1000); 
+                    }).catch(e => {
+                        console.error('Rewarded interstitial error:', e);
+                        showMessage('Ad Error', 'Could not load the ad. Please try again.');
+                    });
+                } catch (e) {
+                    console.error("Ad function not available:", e);
+                    showMessage('Error', 'Ad service is currently unavailable.');
+                }
+            });
+
+            // Rewarded Popup Ad
+            rewardedPopupBtn.addEventListener('click', () => {
+                try {
+                    show_9935313('pop').then(() => {
+                         console.log('Rewarded popup ad watched.');
+                         rewardUser(1500);
+                    }).catch(e => {
+                        console.error('Rewarded popup error:', e);
+                        showMessage('Ad Error', 'Could not load the ad. Please try again.');
+                    });
+                } catch (e) {
+                     console.error("Ad function not available:", e);
+                     showMessage('Error', 'Ad service is currently unavailable.');
+                }
+            });
+            
+            // --- APP INITIALIZATION ---
+            init();
+        });
+    </script>
 </body>
 </html>
