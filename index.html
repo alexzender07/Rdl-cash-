@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Coin</title>
+    <title>RDL Cash</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons for UI icons -->
@@ -19,21 +19,16 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f172a; /* Slate 900 */
             color: #f1f5f9; /* Slate 100 */
+            overflow: hidden; /* Prevent scrolling on body */
         }
-
-        /* Custom gradient for background elements */
         .gradient-bg {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
-
-        /* Custom glassmorphism effect for cards */
         .glass-card {
-            background: rgba(30, 41, 59, 0.6); /* Slate 800 with transparency */
+            background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(51, 65, 85, 0.5); /* Slate 700 with transparency */
+            border: 1px solid rgba(51, 65, 85, 0.5);
         }
-        
-        /* Custom styles for buttons */
         .btn-primary {
             background: linear-gradient(90deg, #22d3ee 0%, #0ea5e9 100%);
             transition: all 0.3s ease;
@@ -43,146 +38,122 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
         }
-        
-        /* Styling for the bottom navigation */
-        .nav-item.active i, .nav-item.active span {
-            color: #22d3ee; /* Cyan 400 */
+        .nav-item.active i, .nav-item.active span { color: #22d3ee; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* For custom modal */
+        .modal { display: none; }
+        .modal.flex { display: flex; }
+        /* Animation for loading screen */
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+            animation-delay: 2.5s;
         }
-        .nav-item {
-            transition: color 0.3s ease;
-        }
-        
-        /* Hide scrollbar */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Auth Page (Login/Signup) -->
-    <div id="auth-page" class="min-h-screen flex flex-col items-center justify-center p-6 gradient-bg">
-        <div class="w-full max-w-sm text-center">
-            <i class="ph-bold ph-rocket-launch text-7xl text-cyan-400"></i>
-            <h1 class="text-4xl font-bold mt-4">Cosmic Coin</h1>
-            <p class="text-slate-400 mt-2">Start your earning journey.</p>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center gradient-bg fade-out">
+        <i class="ph-bold ph-rocket-launch text-8xl text-cyan-400 animate-bounce"></i>
+        <h1 class="text-5xl font-bold mt-6">RDL Cash</h1>
+        <p class="text-slate-400 mt-2">Your Earning Journey Begins...</p>
+    </div>
 
-            <form id="login-form" class="mt-8 space-y-6">
-                <input id="username-input" type="text" placeholder="Enter Your Username" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
-                <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">
-                    Login / Sign Up
-                </button>
+    <!-- Auth Page -->
+    <div id="auth-page" class="hidden min-h-screen flex-col items-center justify-center p-6 gradient-bg">
+        <div class="w-full max-w-sm">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold">RDL Cash</h1>
+            </div>
+            <!-- Tabs -->
+            <div class="flex border-b border-slate-700 mb-6">
+                <button id="login-tab" class="w-1/2 py-3 text-center font-semibold border-b-2 border-cyan-400 text-white">Login</button>
+                <button id="signup-tab" class="w-1/2 py-3 text-center font-semibold border-b-2 border-transparent text-slate-400">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <input id="login-username" type="text" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                <input id="login-password" type="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">Login</button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signup-form" class="hidden space-y-4">
+                <input id="signup-username" type="text" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                <input id="signup-password" type="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                <input id="signup-confirm-password" type="password" placeholder="Confirm Password" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg">Sign Up</button>
             </form>
         </div>
     </div>
 
     <!-- Main App Page -->
-    <div id="app-page" class="hidden h-screen w-screen flex flex-col">
+    <div id="app-page" class="hidden h-screen w-screen flex-col">
         <!-- Header -->
         <header class="p-4 flex items-center justify-between glass-card flex-shrink-0">
+            <!-- User Info and Logout Button -->
             <div class="flex items-center gap-3">
-                <img src="https://placehold.co/40x40/0f172a/22d3ee?text=U" id="user-avatar" class="rounded-full w-10 h-10 border-2 border-cyan-400" alt="User Avatar">
-                <div>
-                    <p class="font-semibold text-lg" id="username-display">Username</p>
-                    <span class="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">Tier 1</span>
+                 <div class="flex items-center gap-3">
+                    <img src="https://placehold.co/40x40/0f172a/22d3ee?text=U" id="user-avatar" class="rounded-full w-10 h-10 border-2 border-cyan-400" alt="User Avatar">
+                    <div>
+                        <p class="font-semibold text-lg" id="username-display">Username</p>
+                    </div>
                 </div>
+                <button id="logout-btn"><i class="ph ph-sign-out text-xl text-slate-400"></i></button>
             </div>
-            <div class="flex items-center gap-4">
-                 <div class="text-right">
-                    <p class="font-bold text-lg text-cyan-400 flex items-center gap-1"><i class="ph-bold ph-coins"></i> <span id="balance-display">0</span></p>
-                    <p class="text-xs text-slate-400">Balance</p>
-                </div>
-                 <i class="ph ph-gear text-2xl text-slate-400"></i>
+            <!-- Balance -->
+            <div class="text-right">
+                <p class="font-bold text-lg text-cyan-400 flex items-center gap-1"><i class="ph-bold ph-coins"></i> <span id="balance-display">0</span></p>
+                <p class="text-xs text-slate-400">Balance</p>
             </div>
         </header>
 
-        <!-- Main Content (Scrollable) -->
+        <!-- Main Content -->
         <main id="content-container" class="flex-grow overflow-y-auto p-4 pb-24 no-scrollbar">
             <!-- Home Section -->
             <div id="home-section" class="space-y-6">
-                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass-card rounded-xl p-4 text-center">
-                        <p class="text-slate-400 text-sm">Tasks Earned</p>
-                        <p class="text-2xl font-bold mt-1" id="tasks-earned">0</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-4 text-center">
-                        <p class="text-slate-400 text-sm">Friends Earned</p>
-                        <p class="text-2xl font-bold mt-1" id="friends-earned">0</p>
-                    </div>
-                </div>
-
+                 <!-- Daily Check-in Card -->
                 <div class="glass-card rounded-xl p-4">
-                     <h2 class="text-xl font-bold mb-4">Play to Earn</h2>
-                     <div class="grid grid-cols-2 gap-4">
-                        <div class="relative rounded-lg overflow-hidden">
-                            <img src="https://placehold.co/300x200/0ea5e9/ffffff?text=Puzzle" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-3">
-                                <h3 class="font-semibold text-white">Puzzle Game</h3>
-                            </div>
-                        </div>
-                        <div class="relative rounded-lg overflow-hidden">
-                            <img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Wheel" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-3">
-                                <h3 class="font-semibold text-white">Lucky Wheel</h3>
-                            </div>
-                        </div>
-                     </div>
+                    <h2 class="text-xl font-bold mb-3">Daily Check-in</h2>
+                    <div id="checkin-rewards" class="grid grid-cols-7 gap-2 text-center text-xs mb-3">
+                        <!-- Days will be populated by JS -->
+                    </div>
+                    <button id="daily-checkin-btn" class="w-full btn-primary text-white font-bold py-3 rounded-lg disabled:bg-slate-600 disabled:cursor-not-allowed">
+                        Claim Reward
+                    </button>
                 </div>
+                
+                <!-- Watch Ads Card -->
+                 <div class="glass-card rounded-xl p-4">
+                     <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-bold">Watch Ads</h2>
+                        <span id="ad-watch-count" class="text-slate-400">0/30</span>
+                     </div>
+                     <p class="text-sm text-slate-400 mt-1">Watch an ad and earn 20 coins.</p>
+                     <button id="watch-ad-btn" class="w-full mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 rounded-lg disabled:bg-slate-600 disabled:cursor-not-allowed">
+                        Watch Ad
+                     </button>
+                 </div>
             </div>
 
-            <!-- Tasks Section -->
-            <div id="tasks-section" class="hidden space-y-4">
-                <h2 class="text-xl font-bold">Daily Tasks</h2>
-                
-                <!-- Join Telegram Task -->
-                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center">
-                            <i class="ph-bold ph-telegram-logo text-2xl text-white"></i>
-                        </div>
-                        <div>
-                            <p class="font-semibold">Join Telegram Channel</p>
-                            <p class="text-sm text-green-400 font-bold">+5,000 Coins</p>
-                        </div>
-                    </div>
-                    <a href="https://t.me/rdlcash" target="_blank" id="join-telegram-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-4 py-2 rounded-lg text-sm">Start</a>
+            <!-- Invest Section -->
+            <div id="invest-section" class="hidden space-y-4">
+                <h2 class="text-xl font-bold">Invest & Earn</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Investment packages will be populated by JS -->
                 </div>
-                
-                <!-- Watch Ads Task -->
-                <div class="glass-card rounded-xl p-4 space-y-3">
-                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
-                            <i class="ph-bold ph-video text-2xl text-white"></i>
-                        </div>
-                        <div>
-                            <p class="font-semibold">Watch Ads</p>
-                            <p class="text-sm text-green-400 font-bold">Earn coins for watching</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <button id="ad-rewarded-interstitial" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-lg text-sm">Rewarded Ad 1</button>
-                        <button id="ad-rewarded-popup" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-lg text-sm">Rewarded Ad 2</button>
+                <div id="my-investments" class="mt-6">
+                    <h3 class="text-lg font-bold mb-2">My Active Investments</h3>
+                    <div id="investment-list" class="space-y-2">
+                        <!-- Active investments will be shown here -->
                     </div>
                 </div>
-                
-                <!-- Invite Friends Task (Placeholder) -->
-                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-rose-500 rounded-lg flex items-center justify-center">
-                            <i class="ph-bold ph-users text-2xl text-white"></i>
-                        </div>
-                        <div>
-                            <p class="font-semibold">Invite 10 friends</p>
-                            <p class="text-sm text-green-400 font-bold">+10,000 Coins</p>
-                        </div>
-                    </div>
-                    <button class="bg-slate-700 text-slate-400 font-bold px-4 py-2 rounded-lg text-sm cursor-not-allowed">Claim</button>
-                </div>
-
             </div>
 
              <!-- Friends Section -->
@@ -190,10 +161,14 @@
                  <div class="glass-card rounded-xl p-6">
                     <i class="ph-bold ph-gift text-6xl text-cyan-400"></i>
                     <h2 class="text-2xl font-bold mt-4">Invite Friends!</h2>
-                    <p class="text-slate-400 mt-2">You and your friend will receive bonuses.</p>
-                    <button class="w-full mt-6 btn-primary text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2">
-                        <i class="ph ph-user-plus"></i>
-                        <span>Invite Friends</span>
+                    <p class="text-slate-400 mt-2">Invite a friend and you both earn coins!</p>
+                    <div class="mt-4 bg-slate-800 p-3 rounded-lg text-left">
+                        <p class="text-sm text-slate-400">Your referral link:</p>
+                        <input id="referral-link-input" type="text" class="w-full bg-transparent text-white mt-1 border-0 p-0 focus:ring-0" readonly>
+                    </div>
+                    <button id="copy-ref-link-btn" class="w-full mt-4 btn-primary text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2">
+                        <i class="ph ph-copy"></i>
+                        <span>Copy Link</span>
                     </button>
                  </div>
             </div>
@@ -202,241 +177,550 @@
             <div id="wallet-section" class="hidden space-y-6">
                 <div class="glass-card rounded-xl p-6 text-center">
                     <p class="text-slate-400">Your Balance</p>
-                    <p class="text-5xl font-bold my-2" id="wallet-balance">0.00 <span class="text-3xl text-slate-400">COIN</span></p>
+                    <p class="text-5xl font-bold my-2" id="wallet-balance">0.00</p>
+                    <p class="text-slate-400" id="usd-equivalent">~ $0.00 USD</p>
+                    
                     <div class="grid grid-cols-4 gap-4 mt-6">
-                        <div class="text-center">
-                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-arrow-up-right text-2xl text-cyan-400"></i></button>
+                        <button data-action="withdraw" class="wallet-action-btn text-center">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-arrow-up-right text-2xl text-cyan-400"></i></div>
                             <span class="text-xs mt-2 block">Withdraw</span>
-                        </div>
-                        <div class="text-center">
-                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-arrow-down-left text-2xl text-cyan-400"></i></button>
-                            <span class="text-xs mt-2 block">Deposit</span>
-                        </div>
-                         <div class="text-center">
-                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-stack text-2xl text-cyan-400"></i></button>
-                            <span class="text-xs mt-2 block">Stake</span>
-                        </div>
-                         <div class="text-center">
-                            <button class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-clock-counter-clockwise text-2xl text-cyan-400"></i></button>
+                        </button>
+                         <a href="https://t.me/rdlcash" target="_blank" class="text-center">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-question text-2xl text-cyan-400"></i></div>
+                            <span class="text-xs mt-2 block">Help</span>
+                        </a>
+                         <button data-action="history" class="wallet-action-btn text-center">
+                            <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mx-auto"><i class="ph ph-clock-counter-clockwise text-2xl text-cyan-400"></i></div>
                             <span class="text-xs mt-2 block">History</span>
-                        </div>
+                        </button>
+                    </div>
+                </div>
+                 <!-- History View -->
+                <div id="history-view" class="hidden glass-card rounded-xl p-4">
+                    <h3 class="text-lg font-bold mb-2">Withdrawal History</h3>
+                    <div id="history-list" class="space-y-2 text-sm">
+                        <!-- History items go here -->
                     </div>
                 </div>
             </div>
-
         </main>
 
         <!-- Bottom Navigation -->
         <nav class="fixed bottom-0 left-0 right-0 p-3 glass-card border-t border-slate-700/50">
             <div class="flex justify-around">
-                <button data-section="home" class="nav-item active flex flex-col items-center w-16 text-slate-400">
-                    <i class="ph-bold ph-house text-2xl"></i>
-                    <span class="text-xs">Home</span>
-                </button>
-                <button data-section="tasks" class="nav-item flex flex-col items-center w-16 text-slate-400">
-                    <i class="ph-bold ph-list-checks text-2xl"></i>
-                    <span class="text-xs">Tasks</span>
-                </button>
-                <button data-section="friends" class="nav-item flex flex-col items-center w-16 text-slate-400">
-                    <i class="ph-bold ph-users-three text-2xl"></i>
-                    <span class="text-xs">Friends</span>
-                </button>
-                <button data-section="wallet" class="nav-item flex flex-col items-center w-16 text-slate-400">
-                    <i class="ph-bold ph-wallet text-2xl"></i>
-                    <span class="text-xs">Wallet</span>
-                </button>
+                <button data-section="home" class="nav-item active flex flex-col items-center w-16 text-slate-400"><i class="ph-bold ph-house text-2xl"></i><span class="text-xs">Home</span></button>
+                <button data-section="invest" class="nav-item flex flex-col items-center w-16 text-slate-400"><i class="ph-bold ph-chart-line-up text-2xl"></i><span class="text-xs">Invest</span></button>
+                <button data-section="friends" class="nav-item flex flex-col items-center w-16 text-slate-400"><i class="ph-bold ph-users-three text-2xl"></i><span class="text-xs">Friends</span></button>
+                <button data-section="wallet" class="nav-item flex flex-col items-center w-16 text-slate-400"><i class="ph-bold ph-wallet text-2xl"></i><span class="text-xs">Wallet</span></button>
             </div>
         </nav>
     </div>
     
     <!-- Custom Message Modal -->
-    <div id="message-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+    <div id="message-modal" class="modal fixed inset-0 bg-black/70 items-center justify-center p-4 z-50">
         <div class="glass-card rounded-xl p-6 text-center max-w-sm w-full">
             <i id="modal-icon" class="ph-bold ph-gift text-5xl text-cyan-400"></i>
             <h3 id="modal-title" class="text-xl font-bold mt-4">Congratulations!</h3>
-            <p id="modal-message" class="text-slate-300 mt-2">You've earned 100 coins!</p>
-            <button id="modal-close-btn" class="w-full mt-6 btn-primary text-white font-bold py-2 rounded-lg">
-                Awesome!
-            </button>
+            <p id="modal-message" class="text-slate-300 mt-2">You've earned coins!</p>
+            <button id="modal-close-btn" class="w-full mt-6 btn-primary text-white font-bold py-2 rounded-lg">Awesome!</button>
         </div>
     </div>
-
-
+    
+    <!-- Withdraw Modal -->
+    <div id="withdraw-modal" class="modal fixed inset-0 bg-black/70 items-center justify-center p-4 z-50">
+        <div class="glass-card rounded-xl p-6 w-full max-w-sm">
+            <h3 class="text-xl font-bold text-center mb-4">Withdraw Coins</h3>
+            <div class="space-y-4">
+                <div>
+                    <label for="withdraw-amount" class="text-sm text-slate-400">Amount in Coins</label>
+                    <input type="number" id="withdraw-amount" placeholder="e.g., 1000" class="w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                </div>
+                <div>
+                     <label for="withdraw-method" class="text-sm text-slate-400">Payment Method</label>
+                     <select id="withdraw-method" class="w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                         <option>PayPal</option>
+                         <option>Bank Transfer</option>
+                         <option>USDT (TRC20)</option>
+                     </select>
+                </div>
+                <input type="text" id="withdraw-address" placeholder="Your PayPal email / Bank Account / USDT Address" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+            </div>
+             <div class="flex gap-4 mt-6">
+                 <button id="withdraw-cancel-btn" class="w-1/2 bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 rounded-lg">Cancel</button>
+                 <button id="withdraw-confirm-btn" class="w-1/2 btn-primary text-white font-bold py-2 rounded-lg">Confirm</button>
+             </div>
+        </div>
+    </div>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- STATE MANAGEMENT ---
-            let user = {
-                username: null,
-                balance: 0,
-                tasksEarned: 0,
-                friendsEarned: 0
-            };
+    // NOTE: This is a complex client-side simulation. For a real app, a backend server and database are required.
+    document.addEventListener('DOMContentLoaded', () => {
 
-            // --- DOM ELEMENTS ---
-            const authPage = document.getElementById('auth-page');
-            const appPage = document.getElementById('app-page');
-            const loginForm = document.getElementById('login-form');
-            const usernameInput = document.getElementById('username-input');
-            const usernameDisplay = document.getElementById('username-display');
-            const userAvatar = document.getElementById('user-avatar');
+        // --- DATABASE & STATE MANAGEMENT ---
+        const DB = {
+            getUsers: () => JSON.parse(localStorage.getItem('rdl_users')) || [],
+            saveUsers: (users) => localStorage.setItem('rdl_users', JSON.stringify(users)),
+            getCurrentUser: () => JSON.parse(sessionStorage.getItem('rdl_currentUser')),
+            saveCurrentUser: (user) => sessionStorage.setItem('rdl_currentUser', JSON.stringify(user)),
+            logoutUser: () => sessionStorage.removeItem('rdl_currentUser')
+        };
 
-            const balanceDisplay = document.getElementById('balance-display');
-            const walletBalanceDisplay = document.getElementById('wallet-balance');
-            const tasksEarnedDisplay = document.getElementById('tasks-earned');
-            const friendsEarnedDisplay = document.getElementById('friends-earned');
+        let currentUser = null;
+        const investmentPlans = [
+            { amount: 1000, returns: 1200, duration: 24 }, // 24 hours
+            { amount: 3000, returns: 3600, duration: 24 },
+            { amount: 7000, returns: 8400, duration: 24 },
+            { amount: 15000, returns: 18000, duration: 24 },
+        ];
+        
+        // --- DOM ELEMENTS ---
+        const loadingScreen = document.getElementById('loading-screen');
+        const authPage = document.getElementById('auth-page');
+        const appPage = document.getElementById('app-page');
+        const loginTab = document.getElementById('login-tab');
+        const signupTab = document.getElementById('signup-tab');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const messageModal = document.getElementById('message-modal');
+        const withdrawModal = document.getElementById('withdraw-modal');
+        const logoutBtn = document.getElementById('logout-btn');
 
-            const navItems = document.querySelectorAll('.nav-item');
-            const contentSections = document.querySelectorAll('#content-container > div');
-            
-            const rewardedInterstitialBtn = document.getElementById('ad-rewarded-interstitial');
-            const rewardedPopupBtn = document.getElementById('ad-rewarded-popup');
-            
-            const messageModal = document.getElementById('message-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalMessage = document.getElementById('modal-message');
-            const modalCloseBtn = document.getElementById('modal-close-btn');
-
-            // --- FUNCTIONS ---
-            
-            // Function to update all UI elements with current user data
-            function updateUI() {
-                if (user.username) {
-                    const firstLetter = user.username.charAt(0).toUpperCase();
-                    usernameDisplay.textContent = user.username;
-                    userAvatar.src = `https://placehold.co/40x40/0f172a/22d3ee?text=${firstLetter}`;
-                }
-                const formattedBalance = user.balance.toLocaleString();
-                balanceDisplay.textContent = formattedBalance;
-                walletBalanceDisplay.textContent = `${formattedBalance}.00`;
-                tasksEarnedDisplay.textContent = user.tasksEarned.toLocaleString();
-                friendsEarnedDisplay.textContent = user.friendsEarned.toLocaleString();
-            }
-            
-            // Function to show a specific content section
-            function showSection(sectionId) {
-                contentSections.forEach(section => {
-                    section.classList.add('hidden');
-                });
-                document.getElementById(sectionId + '-section').classList.remove('hidden');
-                
-                navItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.dataset.section === sectionId) {
-                        item.classList.add('active');
-                    }
-                });
-            }
-            
-            // Function to show the custom message modal
-            function showMessage(title, message) {
-                modalTitle.textContent = title;
-                modalMessage.textContent = message;
-                messageModal.classList.remove('hidden');
-            }
-
-            // Function to handle login
-            function handleLogin(e) {
-                e.preventDefault();
-                const username = usernameInput.value.trim();
-                if (username) {
-                    user.username = username;
-                    localStorage.setItem('cosmicCoinUser', JSON.stringify(user));
-                    authPage.classList.add('hidden');
-                    appPage.classList.remove('hidden');
-                    updateUI();
-                    
-                    // This is where you can load the In-App Interstitial Ad on app start
-                    try {
-                        show_9935313({
-                            type: 'inApp',
-                            inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
-                        });
-                    } catch (e) {
-                        console.error("In-App Ad failed to load:", e);
-                    }
-                }
-            }
-
-            // Function to initialize the app
-            function init() {
-                const savedUser = localStorage.getItem('cosmicCoinUser');
-                if (savedUser) {
-                    user = JSON.parse(savedUser);
-                    authPage.classList.add('hidden');
-                    appPage.classList.remove('hidden');
-                    updateUI();
-                     try {
-                        show_9935313({
-                            type: 'inApp',
-                            inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
-                        });
-                    } catch (e) {
-                        console.error("In-App Ad failed to load on init:", e);
-                    }
+        // --- CORE APP LOGIC ---
+        
+        function initApp() {
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                currentUser = DB.getCurrentUser();
+                if (currentUser) {
+                    processUserOnLoad(); // Check for investment returns etc.
+                    renderApp();
+                    showPage('app');
                 } else {
-                    authPage.classList.remove('hidden');
-                    appPage.classList.add('hidden');
+                    showPage('auth');
                 }
+            }, 3000); // 3-second splash screen
+        }
+
+        function showPage(page) {
+            authPage.classList.add('hidden');
+            appPage.classList.add('hidden');
+            if (page === 'auth') authPage.classList.remove('hidden');
+            if (page === 'app') appPage.classList.remove('hidden');
+        }
+        
+        function updateUserInDB() {
+            let users = DB.getUsers();
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                DB.saveUsers(users);
+                DB.saveCurrentUser(currentUser);
             }
-            
-            function rewardUser(amount, type = 'task') {
-                user.balance += amount;
-                if (type === 'task') {
-                    user.tasksEarned += amount;
-                }
-                localStorage.setItem('cosmicCoinUser', JSON.stringify(user));
-                updateUI();
-                showMessage('Congratulations!', `You have been rewarded with ${amount.toLocaleString()} coins!`);
-            }
+        }
+        
+        function showMessage(title, message, isSuccess = true) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            const icon = document.getElementById('modal-icon');
+            icon.className = isSuccess 
+                ? 'ph-bold ph-gift text-5xl text-cyan-400' 
+                : 'ph-bold ph-warning-circle text-5xl text-red-400';
+            messageModal.classList.add('flex');
+        }
 
-            // --- EVENT LISTENERS ---
-            loginForm.addEventListener('submit', handleLogin);
-            
-            navItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    showSection(item.dataset.section);
-                });
-            });
-
-            modalCloseBtn.addEventListener('click', () => {
-                messageModal.classList.add('hidden');
-            });
-            
-            // Rewarded Interstitial Ad
-            rewardedInterstitialBtn.addEventListener('click', () => {
-                try {
-                    show_9935313().then(() => {
-                        console.log('Rewarded interstitial ad watched.');
-                        rewardUser(1000); 
-                    }).catch(e => {
-                        console.error('Rewarded interstitial error:', e);
-                        showMessage('Ad Error', 'Could not load the ad. Please try again.');
-                    });
-                } catch (e) {
-                    console.error("Ad function not available:", e);
-                    showMessage('Error', 'Ad service is currently unavailable.');
-                }
-            });
-
-            // Rewarded Popup Ad
-            rewardedPopupBtn.addEventListener('click', () => {
-                try {
-                    show_9935313('pop').then(() => {
-                         console.log('Rewarded popup ad watched.');
-                         rewardUser(1500);
-                    }).catch(e => {
-                        console.error('Rewarded popup error:', e);
-                        showMessage('Ad Error', 'Could not load the ad. Please try again.');
-                    });
-                } catch (e) {
-                     console.error("Ad function not available:", e);
-                     showMessage('Error', 'Ad service is currently unavailable.');
-                }
-            });
-            
-            // --- APP INITIALIZATION ---
-            init();
+        // --- AUTHENTICATION ---
+        
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('border-cyan-400', 'text-white');
+            loginTab.classList.remove('border-transparent', 'text-slate-400');
+            signupTab.classList.remove('border-cyan-400', 'text-white');
+            signupTab.classList.add('border-transparent', 'text-slate-400');
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
         });
+
+        signupTab.addEventListener('click', () => {
+            // Similar to loginTab listener, but reversed
+            signupTab.classList.add('border-cyan-400', 'text-white');
+            signupTab.classList.remove('border-transparent', 'text-slate-400');
+            loginTab.classList.remove('border-cyan-400', 'text-white');
+            loginTab.classList.add('border-transparent', 'text-slate-400');
+            signupForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const users = DB.getUsers();
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = user;
+                DB.saveCurrentUser(currentUser);
+                initApp(); // Re-run init to load user data
+            } else {
+                showMessage('Login Failed', 'Invalid username or password.', false);
+            }
+        });
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+            if (password !== confirmPassword) {
+                return showMessage('Error', 'Passwords do not match.', false);
+            }
+
+            let users = DB.getUsers();
+            if (users.find(u => u.username === username)) {
+                return showMessage('Error', 'Username already exists.', false);
+            }
+            
+            // Referral Logic
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            let referredBy = null;
+            let initialBalance = 0;
+
+            if (refCode) {
+                const referrer = users.find(u => u.referralCode === refCode);
+                if (referrer) {
+                    referrer.balance += 20; // Referrer gets 20 coins
+                    initialBalance = 30; // New user gets 30 coins
+                    referredBy = referrer.username;
+                }
+            }
+
+            const newUser = {
+                username,
+                password, // Note: In a real app, NEVER store plain text passwords.
+                balance: initialBalance,
+                referralCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
+                referredBy,
+                lastCheckin: null,
+                consecutiveDays: 0,
+                adsWatchedToday: { date: null, count: 0 },
+                investments: [],
+                withdrawalHistory: [],
+                telegramJoined: false
+            };
+            
+            users.push(newUser);
+            DB.saveUsers(users);
+            currentUser = newUser;
+            DB.saveCurrentUser(currentUser);
+            showMessage('Success', `Welcome, ${username}! You've received ${initialBalance} bonus coins!`);
+            initApp();
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            DB.logoutUser();
+            currentUser = null;
+            window.location.reload();
+        });
+
+
+        // --- UI RENDERING ---
+        
+        function renderApp() {
+            if (!currentUser) return;
+            renderHeader();
+            renderHomePage();
+            renderInvestPage();
+            renderFriendsPage();
+            renderWalletPage();
+            showSection('home');
+        }
+
+        function renderHeader() {
+            document.getElementById('username-display').innerText = currentUser.username;
+            document.getElementById('user-avatar').src = `https://placehold.co/40x40/0f172a/22d3ee?text=${currentUser.username.charAt(0).toUpperCase()}`;
+            document.getElementById('balance-display').innerText = currentUser.balance.toLocaleString();
+        }
+
+        // --- HOME PAGE LOGIC (CHECK-IN & ADS) ---
+        
+        function renderHomePage() {
+            renderDailyCheckin();
+            renderWatchAds();
+        }
+        
+        function renderDailyCheckin() {
+            const btn = document.getElementById('daily-checkin-btn');
+            const rewardsContainer = document.getElementById('checkin-rewards');
+            rewardsContainer.innerHTML = '';
+
+            // Render day markers
+            for (let i = 1; i <= 7; i++) {
+                const dayEl = document.createElement('div');
+                const isSpecialDay = i === 6 || i === 7;
+                const reward = isSpecialDay ? 100 : 50;
+                dayEl.innerHTML = `<p class="font-bold ${isSpecialDay ? 'text-cyan-400' : ''}">D${i}</p><p>${reward}</p>`;
+                if (i <= currentUser.consecutiveDays) {
+                    dayEl.classList.add('bg-cyan-500/30', 'rounded-md', 'p-1');
+                }
+                 rewardsContainer.appendChild(dayEl);
+            }
+
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+            const now = new Date().getTime();
+            const lastCheckinTime = currentUser.lastCheckin ? new Date(currentUser.lastCheckin).getTime() : 0;
+            const timeSinceLastCheckin = now - lastCheckinTime;
+            
+            if (timeSinceLastCheckin >= twentyFourHours) {
+                btn.disabled = false;
+                btn.innerText = 'Claim Reward';
+            } else {
+                btn.disabled = true;
+                // Countdown timer
+                const timeLeft = twentyFourHours - timeSinceLastCheckin;
+                setInterval(() => {
+                    const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+                    const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
+                    const seconds = Math.floor((timeLeft / 1000) % 60);
+                    btn.innerText = `Claim in ${hours}h ${minutes}m ${seconds}s`;
+                }, 1000);
+            }
+        }
+        
+        document.getElementById('daily-checkin-btn').addEventListener('click', () => {
+            // Show ad first
+            try {
+                show_9935313().then(() => {
+                    // Ad was successful
+                    showMessage('Complete!', 'Ad watched successfully.');
+                    
+                    const now = new Date();
+                    const lastCheckinDate = currentUser.lastCheckin ? new Date(currentUser.lastCheckin) : null;
+                    const isConsecutive = lastCheckinDate && (now.getTime() - lastCheckinDate.getTime()) < (48 * 60 * 60 * 1000);
+                    
+                    currentUser.consecutiveDays = isConsecutive ? (currentUser.consecutiveDays % 7) + 1 : 1;
+                    
+                    const reward = (currentUser.consecutiveDays === 6 || currentUser.consecutiveDays === 7) ? 100 : 50;
+                    currentUser.balance += reward;
+                    currentUser.lastCheckin = now.toISOString();
+                    
+                    updateUserInDB();
+                    renderApp();
+                    showMessage('Reward Claimed!', `You have received ${reward} coins.`);
+
+                }).catch(e => {
+                    showMessage('Ad Error', 'Could not load ad. Please try again.', false);
+                });
+            } catch(e) {
+                 showMessage('Ad Error', 'Ad service not available.', false);
+            }
+        });
+        
+        function renderWatchAds() {
+            const today = new Date().toISOString().split('T')[0];
+            if (currentUser.adsWatchedToday.date !== today) {
+                currentUser.adsWatchedToday = { date: today, count: 0 };
+                updateUserInDB();
+            }
+            const count = currentUser.adsWatchedToday.count;
+            document.getElementById('ad-watch-count').innerText = `${count}/30`;
+            document.getElementById('watch-ad-btn').disabled = count >= 30;
+        }
+
+        document.getElementById('watch-ad-btn').addEventListener('click', () => {
+            try {
+                show_9935313('pop').then(() => {
+                    currentUser.balance += 20;
+                    currentUser.adsWatchedToday.count++;
+                    updateUserInDB();
+                    renderApp();
+                    showMessage('Reward!', 'You earned 20 coins.');
+                }).catch(e => {
+                    showMessage('Ad Error', 'Could not load ad. Please try again.', false);
+                })
+            } catch(e) {
+                showMessage('Ad Error', 'Ad service not available.', false);
+            }
+        });
+
+        // --- INVEST PAGE ---
+
+        function renderInvestPage() {
+            const container = document.querySelector('#invest-section .grid');
+            container.innerHTML = '';
+            investmentPlans.forEach(plan => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-xl p-4 text-center';
+                card.innerHTML = `
+                    <p class="text-sm text-slate-400">Invest</p>
+                    <p class="text-2xl font-bold my-1">${plan.amount.toLocaleString()}</p>
+                    <p class="text-sm text-slate-400">Get ${plan.returns.toLocaleString()} in 24h</p>
+                    <button data-amount="${plan.amount}" class="invest-btn mt-3 w-full bg-cyan-500/80 hover:bg-cyan-500 text-white font-bold py-2 rounded-lg text-sm">Invest Now</button>
+                `;
+                container.appendChild(card);
+            });
+            renderActiveInvestments();
+        }
+        
+        function renderActiveInvestments() {
+            const list = document.getElementById('investment-list');
+            list.innerHTML = '';
+            if (currentUser.investments.length === 0) {
+                list.innerHTML = '<p class="text-slate-400 text-sm text-center">No active investments.</p>';
+                return;
+            }
+            currentUser.investments.forEach(inv => {
+                const returnDate = new Date(inv.returnDate);
+                const item = document.createElement('div');
+                item.className = 'glass-card p-3 rounded-lg flex justify-between items-center';
+                item.innerHTML = `
+                    <div>
+                        <p class="font-semibold">${inv.amount.toLocaleString()} Coins Invested</p>
+                        <p class="text-xs text-slate-400">Returns ${inv.returns.toLocaleString()} on ${returnDate.toLocaleDateString()}</p>
+                    </div>
+                    <span class="text-sm text-amber-400">Pending</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+        
+        document.querySelector('#invest-section').addEventListener('click', (e) => {
+            if (e.target.classList.contains('invest-btn')) {
+                const amount = parseInt(e.target.dataset.amount);
+                const plan = investmentPlans.find(p => p.amount === amount);
+                if (currentUser.balance >= amount) {
+                    currentUser.balance -= amount;
+                    const returnDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+                    currentUser.investments.push({
+                        amount: plan.amount,
+                        returns: plan.returns,
+                        returnDate: returnDate.toISOString()
+                    });
+                    updateUserInDB();
+                    renderApp();
+                    showMessage('Investment Started', `You have invested ${amount.toLocaleString()} coins.`);
+                } else {
+                    showMessage('Insufficient Funds', 'You do not have enough coins to invest.', false);
+                }
+            }
+        });
+        
+        function processUserOnLoad() {
+             // Investment Returns
+            const now = new Date();
+            const maturedInvestments = currentUser.investments.filter(inv => new Date(inv.returnDate) <= now);
+            if(maturedInvestments.length > 0) {
+                let totalReturns = 0;
+                maturedInvestments.forEach(inv => totalReturns += inv.returns);
+                currentUser.balance += totalReturns;
+                currentUser.investments = currentUser.investments.filter(inv => new Date(inv.returnDate) > now);
+                updateUserInDB();
+                showMessage('Investment Complete!', `You have received ${totalReturns.toLocaleString()} coins from your investments.`);
+            }
+        }
+
+
+        // --- FRIENDS PAGE ---
+        
+        function renderFriendsPage() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const refLink = `${baseUrl}?ref=${currentUser.referralCode}`;
+            document.getElementById('referral-link-input').value = refLink;
+        }
+
+        document.getElementById('copy-ref-link-btn').addEventListener('click', () => {
+            const input = document.getElementById('referral-link-input');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            showMessage('Copied!', 'Referral link copied to clipboard.');
+        });
+        
+        // --- WALLET PAGE ---
+        
+        function renderWalletPage() {
+            const balance = currentUser.balance;
+            const usdValue = (balance / 1000) * 0.1;
+            document.getElementById('wallet-balance').innerText = balance.toLocaleString();
+            document.getElementById('usd-equivalent').innerText = `~ $${usdValue.toFixed(4)} USD`;
+            document.getElementById('history-view').classList.add('hidden');
+        }
+
+        document.querySelector('#wallet-section').addEventListener('click', (e) => {
+            const actionBtn = e.target.closest('.wallet-action-btn');
+            if (!actionBtn) return;
+            const action = actionBtn.dataset.action;
+            if (action === 'withdraw') {
+                withdrawModal.classList.add('flex');
+            } else if (action === 'history') {
+                renderHistory();
+                document.getElementById('history-view').classList.remove('hidden');
+            }
+        });
+        
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = '';
+            if (currentUser.withdrawalHistory.length === 0) {
+                list.innerHTML = '<p class="text-slate-400 text-center">No withdrawal history.</p>';
+                return;
+            }
+            currentUser.withdrawalHistory.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'bg-slate-700/50 p-2 rounded-lg flex justify-between';
+                el.innerHTML = `
+                    <span>${item.amount.toLocaleString()} coins via ${item.method}</span>
+                    <span class="text-slate-400">${new Date(item.date).toLocaleDateString()}</span>
+                `;
+                list.appendChild(el);
+            });
+        }
+        
+        document.getElementById('withdraw-cancel-btn').addEventListener('click', () => withdrawModal.classList.remove('flex'));
+        
+        document.getElementById('withdraw-confirm-btn').addEventListener('click', () => {
+            const amount = parseInt(document.getElementById('withdraw-amount').value);
+            const method = document.getElementById('withdraw-method').value;
+            const address = document.getElementById('withdraw-address').value;
+
+            if (!amount || !address || amount <= 0) {
+                return showMessage('Invalid Input', 'Please fill all fields correctly.', false);
+            }
+            if (amount > currentUser.balance) {
+                return showMessage('Error', 'Insufficient balance.', false);
+            }
+            
+            currentUser.balance -= amount;
+            currentUser.withdrawalHistory.unshift({ amount, method, address, date: new Date().toISOString() });
+            updateUserInDB();
+            renderApp();
+            withdrawModal.classList.remove('flex');
+            showMessage('Withdrawal Submitted', 'Your withdrawal request has been submitted for processing.');
+        });
+
+        
+        // --- NAVIGATION ---
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('#content-container > div');
+        
+        function showSection(sectionId) {
+            contentSections.forEach(s => s.classList.add('hidden'));
+            document.getElementById(sectionId + '-section').classList.remove('hidden');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionId) item.classList.add('active');
+            });
+        }
+        navItems.forEach(item => {
+            item.addEventListener('click', () => showSection(item.dataset.section));
+        });
+        
+        // Modal close button
+        document.getElementById('modal-close-btn').addEventListener('click', () => messageModal.classList.remove('flex'));
+        
+        // --- START THE APP ---
+        initApp();
+    });
     </script>
 </body>
 </html>
+
