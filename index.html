@@ -1,144 +1,127 @@
 <!doctype html>
 <html lang="ne">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Rdl Cash — Premium Demo</title>
-  <style>
-    :root{
-      --bg:#071029; --card:#0f1724; --accent1:#06b6d4; --accent2:#3b82f6; --muted:#94a3b8; --glass:rgba(255,255,255,0.04);
-      --radius:18px; --shadow: 0 6px 18px rgba(2,6,23,0.6);
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; background:linear-gradient(180deg,#041226 0%, #071029 60%); color:#e6eef8; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:18px}
-    .app{width:420px; max-width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:22px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column}
-    header{padding:14px 18px; display:flex; align-items:center; gap:12px}
-    .logo{width:52px;height:52px;background:linear-gradient(135deg,var(--accent1),var(--accent2)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700}
-    .title{flex:1}
-    .title h1{margin:0;font-size:16px}
-    .title p{margin:0;font-size:12px;color:var(--muted)}
-    .wallet{background:linear-gradient(90deg, rgba(11,44,60,0.6), rgba(17,26,48,0.4)); margin:12px; padding:12px; border-radius:14px; display:flex; justify-content:space-between; align-items:center}
-    .coins{font-size:18px;font-weight:700}
-    .fiat{font-size:12px;color:var(--muted)}
-    main{padding:12px 14px 80px 14px; overflow:auto}
-    .card{background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; box-shadow: 0 6px 22px rgba(6,12,28,0.5)}
-    .cta{display:flex; gap:10px}
-    button{background:linear-gradient(90deg,var(--accent1),var(--accent2)); border:none;color:#012; padding:10px 12px; border-radius:10px; font-weight:700; cursor:pointer}
-    .muted{color:var(--muted); font-size:13px}
-    .tasks .task{display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
-    .bottom-nav{position:fixed; left:50%; transform:translateX(-50%); bottom:26px; width:420px; max-width:100%; display:flex; justify-content:space-around; padding:10px 18px;}
-    .nav{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)); border-radius:14px; padding:10px 14px; display:flex; gap:12px; justify-content:space-between; align-items:center; width:100%;}
-    .nav button{background:transparent;color:var(--muted); padding:8px; border-radius:10px}
-    .nav button.active{color:#fff; background:linear-gradient(90deg,var(--accent1),var(--accent2));}
-    .coin{position:fixed; font-size:18px; pointer-events:none; animation:fall 1200ms linear forwards}
-    @keyframes fall{to{transform:translateY(120vh) rotate(360deg); opacity:0}}
-    .wheel-wrap{display:flex; gap:12px; align-items:center}
-    .wheel{width:120px;height:120px;border-radius:50%;position:relative;overflow:hidden;border:6px solid rgba(255,255,255,0.03)}
-    .wheel .seg{position:absolute; inset:0; transform-origin:center; display:flex; align-items:center; justify-content:center; font-weight:700}
-    .spin-btn{padding:8px 10px;border-radius:10px}
-    .modal{position:fixed; inset:0; background:rgba(2,6,23,0.6); display:flex; align-items:center; justify-content:center; z-index:50}
-    .modal .box{width:360px; background:#071229; padding:18px; border-radius:14px}
-    input, select{width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; margin-bottom:8px}
-    .small{font-size:12px}
-    .badge{background:linear-gradient(90deg,#ffd166,#f97316); padding:6px 8px; border-radius:8px; color:#081021; font-weight:700}
-    .ref-box{display:flex; gap:10px; align-items:center}
-    .ref-box input{flex:1}
-    .table{width:100%; border-collapse:collapse}
-    .table td{padding:8px; border-top:1px solid rgba(255,255,255,0.02); font-size:13px}
-    footer{padding:10px 14px}
-    .muted-btn{background:transparent;border:1px solid rgba(255,255,255,0.04); color:var(--muted); padding:8px 10px; border-radius:10px}
-    @media(max-width:480px){.app{width:100%}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rdl Cash — Professional Demo</title>
+<style>
+  :root {
+    --bg: #071029; --card: #0f1724; --accent1: #06b6d4; --accent2: #3b82f6; --muted: #94a3b8;
+    --radius: 18px; --shadow: 0 6px 18px rgba(2,6,23,0.6);
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  }
+  * {box-sizing:border-box}
+  body {margin:0; background:var(--bg); color:#e6eef8; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:12px;}
+  .app {width:420px; max-width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:22px; box-shadow:var(--shadow); overflow:hidden;}
+  header{padding:14px; display:flex; align-items:center; gap:12px}
+  .logo{width:52px;height:52px;background:linear-gradient(135deg,var(--accent1),var(--accent2)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700}
+  .title h1{margin:0;font-size:18px}
+  .title p{margin:0;font-size:12px;color:var(--muted)}
+  main{padding:12px; overflow:auto}
+  .section{background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; box-shadow:0 6px 22px rgba(6,12,28,0.5)}
+  button{background:linear-gradient(90deg,var(--accent1),var(--accent2)); border:none;color:#012; padding:10px 12px; border-radius:10px; font-weight:700; cursor:pointer}
+  .muted{color:var(--muted); font-size:13px}
+  input, select{width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; margin-bottom:8px}
+</style>
 </head>
 <body>
-  <div class="app" id="app">
-    <header>
-      <div class="logo">💵</div>
-      <div class="title">
-        <h1>Rdl Cash</h1>
-        <p class="muted">Earn smart — premium demo</p>
-      </div>
-      <div class="badge" id="levelBadge">Bronze</div>
-    </header>
+<div class="app">
+  <header>
+    <div class="logo">💵</div>
+    <div class="title">
+      <h1>Rdl Cash</h1>
+      <p class="muted">Professional Earnings App</p>
+    </div>
+  </header>
 
-    <div class="wallet" id="walletCard">
+  <main>
+    <!-- Dashboard Section -->
+    <div class="section" id="dashboard">
+      <h3>Dashboard</h3>
+      <p class="muted">Tap once, earn after 24 hours</p>
+      <button id="tapEarnBtn">Tap to Earn</button>
+      <div id="tapTimer" class="muted">Next earning in: 24:00:00</div>
+    </div>
+
+    <!-- Tasks Section -->
+    <div class="section" id="tasks">
+      <h3>Tasks</h3>
       <div>
-        <div class="coins" id="coins">0</div>
-        <div class="fiat" id="fiat">≈ $0.00</div>
+        <button id="joinTelegram">Join Telegram</button>
       </div>
-      <div style="text-align:right">
-        <div class="muted small">User ID</div>
-        <div id="userId" style="font-weight:700">—</div>
+      <div>
+        <button id="watchRewardAd">Watch Reward Ad</button>
       </div>
     </div>
 
-    <main id="main">
-      <!-- Dashboard -->
-      <div class="card" id="view-dashboard">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-          <div>
-            <div class="muted small">Quick Earn</div>
-            <div style="font-weight:800">Tap once — coins arrive within 24 hours</div>
-          </div>
-          <div>
-            <button id="tapEarnBtn">Tap to Earn</button>
-            <div class="muted small" id="tapStatus">No pending</div>
-          </div>
-        </div>
-      </div>
+    <!-- Withdraw Section -->
+    <div class="section" id="withdraw">
+      <h3>Withdraw</h3>
+      <input type="number" id="withdrawAmount" placeholder="Amount (coins)">
+      <select id="withdrawMethod">
+        <option>PayPal</option>
+        <option>Bank Transfer</option>
+        <option>Payoneer</option>
+        <option>Crypto (USDT)</option>
+        <option>Gift Card</option>
+      </select>
+      <input type="text" id="withdrawDetails" placeholder="Account details">
+      <button id="reqWithdraw">Request Withdraw</button>
+    </div>
 
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="muted small">Daily Check-in</div>
-            <div style="font-weight:800">Streak: <span id="streak">0</span> days</div>
-          </div>
-          <div>
-            <button id="checkinBtn">Check-in Now</button>
-          </div>
-        </div>
-      </div>
+    <!-- Profile Section -->
+    <div class="section" id="profile">
+      <h3>Profile</h3>
+      <p class="muted">User ID: 12345</p>
+      <p class="muted">Name: Professional User</p>
+    </div>
 
-      <div class="card tasks">
-        <div class="muted small">Tasks</div>
-        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
-          <div class="task"><div>Join our Telegram channel</div><div><a href="https://t.me/rdlcash" target="_blank"><button class="taskBtn" data-reward="50">Join (50)</button></a></div></div>
-          <div class="task"><div>Complete quick survey</div><div><button class="taskBtn" data-reward="120">Start (120)</button></div></div>
-          <div class="task"><div>Watch Ads</div><div><button class="taskBtn" data-reward="10" id="watchAdBtn">Watch Ad</button></div></div>
-          <div class="task"><div>Install partner app</div><div><button class="taskBtn" data-reward="200">Start (200)</button></div></div>
-        </div>
-      </div>
+  </main>
+</div>
 
-      <div class="card" id="view-withdraw">
-        <div class="muted small">Withdraw</div>
-        <div style="margin-top:8px;display:flex;gap:10px">
-          <input id="withdrawAmount" placeholder="Amount (coins)" />
-          <select id="withdrawMethod">
-            <option>PayPal</option>
-            <option>Bank Transfer</option>
-            <option>Payoneer</option>
-            <option>Crypto (USDT)</option>
-            <option>Gift Card</option>
-          </select>
-        </div>
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <input id="withdrawDetails" placeholder="PayPal email / Account details" />
-          <button id="reqWithdraw">Request Withdraw</button>
-        </div>
-        <div class="card">
-          <div class="muted small">Withdraw History</div>
-          <table class="table" id="withdrawTable"></table>
-        </div>
-      </div>
+<script src='//libtl.com/sdk.js' data-zone='9935313' data-sdk='show_9935313'></script>
+<script>
+let balance = 0;
+const tapBtn = document.getElementById('tapEarnBtn');
+const tapTimerEl = document.getElementById('tapTimer');
+let nextTapTime = Date.now();
 
-    </main>
+function updateTimer(){
+  const diff = Math.max(0, nextTapTime - Date.now());
+  const h = Math.floor(diff/3600000).toString().padStart(2,'0');
+  const m = Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
+  const s = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
+  tapTimerEl.innerText = `Next earning in: ${h}:${m}:${s}`;
+}
+setInterval(updateTimer, 1000);
 
-    <script>
-      const coinsEl = document.getElementById('coins');
-      let balance = 0;
-      function updateBalance(){ coinsEl.innerText = balance; }
-      document.getElementById('tapEarnBtn').addEventListener('click', ()=>{ balance += 5; updateBalance(); alert('5 coins credited in 24h (simulated)'); });
-      document.getElementById('checkinBtn').addEventListener('click', ()=>{ balance += 10; updateBalance(); alert('Daily check-in +10 coins'); });
-      document.getElementById('watchAdBtn').addEventListener('click', ()=>{ const reward = Math.floor(Math.random()*10)+1; balance += reward; updateBalance(); alert('Ad watched: +' + reward + ' coins'); });
-      document.getElementById('reqWithdraw').addEventListener('click', ()=>{ alert('Withdraw request submitted (simulated)'); });
+tapBtn.addEventListener('click', ()=>{
+  if(Date.now()>=nextTapTime){
+    balance += 50;
+    nextTapTime = Date.now() + 24*60*60*1000;
+    alert('50 coins credited.');
+  } else {
+    alert('Earning not ready yet.');
+  }
+});
+
+// Telegram Join Task
+document.getElementById('joinTelegram').addEventListener('click', ()=>{
+  window.open('https://t.me/rdlcash','_blank');
+});
+
+// Rewarded Ad Task
+document.getElementById('watchRewardAd').addEventListener('click', ()=>{
+  show_9935313().then(()=>{
+    balance += 20;
+    alert('Ad watched: 20 coins credited');
+  });
+});
+
+// Withdraw request simulation
+document.getElementById('reqWithdraw').addEventListener('click', ()=>{
+  alert('Withdraw request submitted (simulation).');
+});
+</script>
+</body>
+</html>
